@@ -153,7 +153,7 @@ mongoose.connect('mongodb+srv://mostafa:LUjiZggnXA6agN2f@cluster0.wvo17.mongodb.
                         // app.listen(3000);
                     })
             }
-            app.listen(3000);
+            app.listen(process.env.PORT || 3000);
         })
     })
     .catch(err => {
