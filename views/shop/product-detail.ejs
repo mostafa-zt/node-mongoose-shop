@@ -1,0 +1,35 @@
+<%- include('../partials/head.ejs') %>
+<script src="/js/main.js" defer></script>
+<script src="/js/alert.js" defer></script>
+</head>
+
+<body>
+    <%- include('../partials/navigation.ejs') %>
+    <main>
+        <div class="container">
+            <% if (product !== null) { %>
+            <div class="row">
+                <div class="col col-lg centered">
+                    <div class="box" id="<%= product.productId %>">
+                        <img src="<%= product.productImageUrl %>">
+                        <div class="box-content">
+                            <div class="prod__label productTitle"><%= product.productTitle %></div>
+                            <div class="prod__label productPrice">$<%= product.productPrice %></div>
+                            <div class="prod__label"><%= product.productAuthor %></div>
+                            <div class="prod__label"><%= product.productDescription %></div>
+                        </div>
+                        <div class="actions__section">
+                            <a href="" class="button button-success">Add To Cart</a>
+                            <!-- <a href="/product-detail/<%= product.productId %>" class="button button-success">Details</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } else {%>
+            <h1>There is no PRODUCTS!</h1>
+            <% } %>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+<%- include('../partials/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../partials/navigation.ejs') %>
+            <main>
+                <% if(errorMsg) { %>
+                <div class="msg"><%= errorMsg  %></div>
+                <% } %>
+                <div class="container">
+                    <div class="centered login_section">
+                        <h1> Login </h1>
+                        <form method="POST" action="/login/">
+                            <input type="hidden" value="<%= csrfToken %>" name="_csrf">
+                            <label for="email">Emai</label>
+                            <input type="email" name="email" id="email">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password">
+                            <button class="button button-success" type="submit">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+    </body>
+
+    </html>
