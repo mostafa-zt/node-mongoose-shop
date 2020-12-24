@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const compression = require('compression');
 
 const errorsController = require('./controllers/error');
@@ -44,7 +44,7 @@ const fileFilter = (req, file, callback) => {
     }
 }
 
-app.use(helmet());
+// app.use(helmet());
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
