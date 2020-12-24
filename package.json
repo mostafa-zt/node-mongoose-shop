@@ -6,17 +6,24 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start-server": "node app.js",
+    "build:dev": "webpack-dev-server",
+    "build": "webpack",
+    "build:prod": "webpack --config webpack.config.prod.js"
   },
   "author": "Mostafa",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.4.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^2.4.1",
     "csurf": "^1.11.0",
@@ -26,6 +33,7 @@
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "express-validator": "^6.8.0",
+    "helmet": "^4.2.0",
     "mongodb": "^3.6.3",
     "mongoose": "^5.11.7",
     "multer": "^1.4.2",

@@ -1,23 +1,20 @@
 <%- include('../partials/head.ejs') %>
     </head>
 
-    
     <body>
         <%- include('../partials/navigation.ejs') %>
             <main>
                 <div class="container">
+                    <% if (cart.cartItems.length>0) { %>
                     <div class="box__section cart_section">
-                        <!-- <h1> Your Cart </h1> -->
                         <div class="box__section_header order bold">Your Cart</div>
                         <table style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <td>Product Title</td>
-                                    <td>Product Author</td>
-                                    <td>Product Price</td>
-                                    <td>Product Quantity</td>
-                                    <td>Total Price</td>
-                                </tr>
+                                    <td class="text-center">Product Title</td>
+                                    <td class="text-center">Product Price</td>
+                                    <td class="text-center">Product Quantity</td>
+                                    <td class="text-center">Total Price</td>
                             </thead>
                             <tbody>
                                 <% for (let index=0; index < cart.cartItems.length; index++) { %>
@@ -48,6 +45,9 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td id="totalPrice__cart" colspan="5">
                                         <%= cart.totalPriceCart %>
                                     </td>
@@ -56,19 +56,11 @@
                         </table>
                         <a class="button button-success checkout__btn" href="/checkout/">Checkout >></a>
                     </div>
-                    <!-- <div class="centered order_section">
-                <h1> Order </h1>
-                <form method="POST" action="/order/">
-                    <input type="hidden" value="<%= csrfToken %>" name="_csrf">
-                    <label for="orderName">Name</label>
-                    <input type="text" name="orderName" id="orderName">
-                    <label for="orderAddress">Order Address</label>
-                    <input type="text" name="orderAddress" id="orderAddress">
-                    <label for="orderPhone">Phone Number</label>
-                    <input type="text" name="orderPhone" id="orderPhone">
-                    <button class="button button-success" type="submit">Order</button>
-                </form>
-            </div> -->
+                    <% } else { %>
+                        <div class="box__section text-center">
+                            <h1>Your cart is empty!</h1>
+                        </div>
+                    <% } %>
                 </div>
             </main>
     </body>

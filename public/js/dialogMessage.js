@@ -26,7 +26,7 @@ class DialogMessage {
         const hostedElementHeight = hostedElement.clientHeight;
         const hostedElementWidth = hostedElement.clientWidth;
 
-        const x = hostedElementPosLeft + 5;
+        const x = hostedElementPosLeft - 250;
         const y = hostedElementPosTop - hostedElementHeight + 35;
 
         dgMsgElement.style.position = 'absolute';

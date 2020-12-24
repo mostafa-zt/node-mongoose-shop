@@ -17,7 +17,6 @@ class Utility {
 
     static digitsOnly = string => [...string].every(c => '0123456789'.includes(c));
 
-
     static formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
         try {
             decimalCount = Math.abs(decimalCount);

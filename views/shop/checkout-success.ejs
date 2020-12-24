@@ -6,9 +6,8 @@
     <main>
         <div class="container">
             <div class="order_list">
-                <h1> Orders... </h1>
                 <div class="box__section order_section">
-                    <div class="box__section_header order trackingNumber bold">#<%= order.orderTrackingNumber %> <a href="/invoice/<%= order._id %>" >Download Invoice</a></div>
+                    <div class="box__section_header order trackingNumber bold">#<%= order.orderTrackingNumber %> <a class="link" href="/invoice/<%= order._id %>" >Download Invoice</a></div>
                     <div class="order"> <label>Address :</label> <%= order.orderName %></div>
                     <div class="order"> <label>Address : </label> <%= order.orderAddress %></div>
                     <div class="order"> <label>Phone Number : </label> <%= order.orderPhone %></div>

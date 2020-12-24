@@ -11,58 +11,52 @@ function sendHttpRequest(method, url) {
     return promise;
 }
 
-
 function removeProduct(productId) {
-    // const test = productId;
-    debugger;
     sendHttpRequest('GET', `/admin/removeProduct/${productId}`).then(responseData => {
-        console.log(responseData);
         const productElement = document.getElementById(productId);
-        productElement.remove();
-        const alert = new Alert(AlertType.Success, 'Moving operation is not fully done, please try again!');
-        alert.show();
+        if (responseData.success) {
+            productElement.remove();
+            const alert = new Alert(AlertType.Success, 'Product has been successfully deleted!');
+            alert.show();
+        }
+        else{
+            const alert = new Alert(AlertType.Warning, 'Removing operation is not fully done! try again.');
+            alert.show();
+        }
     });
 }
 function addToCart(productId) {
     sendHttpRequest('GET', `/addToCart/${productId}`).then(responseData => {
         if (responseData.success) {
-            debugger;
-            const alert = new Alert(AlertType.Success, 'this product has been added to your cart!');
+            const alert = new Alert(AlertType.Success, 'Your order has been successfully placed into your cart!');
             alert.show();
             const cartBoxElement = document.getElementById('cart__box');
             cartBoxElement.innerText = parseInt(responseData.quantity);
         }
-        console.log(responseData);
+        else{
+            const alert = new Alert(AlertType.Warning, responseData.msg);
+            alert.show();
+            window.location.href = "/login/";
+        }
     });
 }
 function decreaseQty(productId) {
     sendHttpRequest('GET', `/decreaseQty/${productId}`).then(responseData => {
         if (responseData.success) {
-            // const el = this.target.closest('.decrement__qty__btn');
-            // const alert = new Alert(AlertType.Success, 'this product has been added to your cart!');
-            // alert.show();
-            // const cartBoxElement = document.getElementById('cart__box');
-            // cartBoxElement.innerText = responseData.quantity;
-            // document.get
             const decrementQtyBtn = document.getElementById(`decrement_qty__btn_${responseData.cartItemId}`);
             const row = decrementQtyBtn.closest('tr');
-            // const cartBoxElement = document.getElementById('cart__box');
-            // cartBoxElement.innerText = responseData.quantity
             if (responseData.quantity === 0) {
                 row.remove();
             }
             else {
                 row.querySelector('.productPriceInQty_data').textContent = formatMoney(responseData.newPriceInQty);
                 row.querySelector('.qty_data').textContent = parseInt(responseData.quantity);
-
-                // decrementQtyBtn.parentElement.getElementsByClassName('qty_data')[0].innerText = responseData.quantity;
             }
             document.getElementById('totalPrice__cart').innerText = formatMoney(responseData.totalPrice);
             const cartBoxElement = document.getElementById('cart__box');
             cartBoxElement.innerText = parseInt(responseData.cartQuantity);
             new DialogMessage().dettach();
         }
-        console.log(responseData);
     });
 }
 
@@ -80,25 +74,14 @@ for (const el of addToCartButtons) {
 
 const decrementQtyButtons = document.getElementsByClassName('decrement__qty__btn');
 for (const el of decrementQtyButtons) {
-    // el.addEventListener('click', showDialogMessage.bind(this,el));
     el.onclick = function (e) {
         e.preventDefault();
-        console.log(el.id);
         const cartItemId = el.getAttribute('data-val');
         const dgMessage = new DialogMessage(el.id, 'Are you sure, you want to decrease the quantity of this product?', decreaseQty.bind(this, cartItemId), 'dialog__message');
         dgMessage.attach();
         return;
     };
 }
-
-function showDialogMessage(el) {
-    console.log(el.id);
-    const cartItemId = el.getAttribute('data-val');
-    const dgMessage = new DialogMessage(el.id, 'Are you sure, you want to decrease the quantity of this product?', decreaseQty.bind(this, cartItemId), 'dialog__message');
-    dgMessage.attach();
-}
-
-
 
 function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
     try {

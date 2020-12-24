@@ -18,9 +18,6 @@
                                             <div class="prod__label productPrice">$<%= product.productPrice %>
                                             </div>
                                             <div class="prod__label">
-                                                <%= product.productAuthor %>
-                                            </div>
-                                            <div class="prod__label">
                                                 <%= product.productDescription %>
                                             </div>
                                         </div>
@@ -57,15 +54,16 @@
                                             <a href="/?page=<%= lastPage %>">  Last Page </a>
                                         <% } %>
                                     <% } %>
-                                    <!-- <a href="/?page=1">1</a>
-                                    <a href="/?page=2">2</a> -->
                                 </div>
                             </div>
                         </div>
 
                         <% } else {%>
-                            <h1>There is no PRODUCTS!</h1>
-                            <% } %>
+                            <div class="box__section text-center">
+                                <h1>There is no product!</h1>
+                                <div>New product is simply added through <b>Add Product</b> menu by a user authenticated!</div>
+                            </div>
+                        <% } %>
                 </div>
             </main>
     </body>
