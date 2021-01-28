@@ -12,6 +12,7 @@ const multer = require('multer');
 // const helmet = require('helmet');
 const compression = require('compression');
 
+const config = require('./config/config').get(process.env.NODE_ENV);
 const errorsController = require('./controllers/error');
 const utility = require('./util/utility');
 const User = require('./models/user');
@@ -20,7 +21,7 @@ const adminRouts = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRootes = require('./routes/auth');
 
-const MONGODB_URI = 'mongodb+srv://mostafa:LUjiZggnXA6agN2f@cluster0.wvo17.mongodb.net/shop?retryWrites=true&w=majority';
+const MONGODB_URI = config.DATABASE ;
 const csrfProtection = csrf();
 const app = express();
 
@@ -52,7 +53,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('file'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store }));
+app.use(session({ secret: config.SECRET , resave: false, saveUninitialized: false, store: store }));
 app.use(csrfProtection);
 app.use(flash());
 
