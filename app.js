@@ -5,6 +5,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const bcrypt = require('bcryptjs');
+// for avoiding Cross-Site Request Forgery
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');

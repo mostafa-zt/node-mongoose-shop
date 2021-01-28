@@ -4,3 +4,4 @@ data
 data/invoices/
 webpack.config.prod.js
 webpack.config.js
+/dist

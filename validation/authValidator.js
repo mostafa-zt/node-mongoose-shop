@@ -15,6 +15,7 @@ class AuthValidator {
                             if (userDoc) {
                                 return Promise.reject('This email address is already being used! email should be unique. try another email address!');
                             }
+                            return Promise.resolve(true);
                         });
                 })
                 .isLowercase().trim().normalizeEmail({ all_lowercase: true, gmail_remove_dots: false  }),
