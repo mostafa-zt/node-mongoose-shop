@@ -1,7 +1,7 @@
-node_modules
-images
-data
-data/invoices/
+node_modules/
+images/
+data/
 webpack.config.prod.js
 webpack.config.js
-/dist
+dist/
+.vscode/
