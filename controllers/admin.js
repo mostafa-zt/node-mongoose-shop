@@ -2,6 +2,8 @@ const path = require('path');
 const { check, validationResult, body } = require('express-validator');
 const Product = require('../models/product');
 const utility = require('../util/utility');
+const User = require('../models/user');
+var mongoose = require('mongoose');
 
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/add-product', {
@@ -153,7 +155,9 @@ exports.postRemoveProduct = (req, res, next) => {
         })
         .then(result => {
             utility.deleteFile(result.productImageUrl);
-            res.status(200).json({ success: true });
+            User.updateMany({ $pull: {'cart.cartItems': { product: productId }} },(err,node)=> {
+                res.status(200).json({ success: true });
+            });
         })
         .catch(err => {
             const error = new Error(err);

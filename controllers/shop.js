@@ -306,10 +306,10 @@ exports.getInvoice = (req, res, next) => {
         let yMoveTo = 0;
         let y = 200;
         order.orderItems.forEach(orderItem => {
-            doc.lineCap('round')
-                .moveTo(50, y)
-                .lineTo(600, y)
-                .stroke("#afa79d").fillOpacity(0.8);
+            // doc.lineCap('round')
+            //     .moveTo(50, y)
+            //     .lineTo(600, y)
+            //     .stroke("#afa79d").fillOpacity(0.8);
             // .fillAndStroke("red", "#900");
             doc.fontSize(14).fillColor('black').text(`Product Title : ${orderItem.product.productTitle}`).moveDown(0.5);
             doc.fontSize(12).fillColor('black').text(`Product Description : ${orderItem.product.productDescription}`).moveDown(0.5);

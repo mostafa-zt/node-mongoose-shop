@@ -98,13 +98,13 @@ app.set('views', 'views');
 
 mongoose.connect(MONGODB_URI)
     .then(result => {
-        User.findOne({ userEmail: 'mostafa.zj@gmail.com' }).then(user => {
+        User.findOne({ userEmail: 'admin@web.com' }).then(user => {
             if (!user) {
                 return bcrypt.hash('123456', 6)
                     .then(hashedPass => {
                         const user = new User({
-                            userName: 'mostafa',
-                            userEmail: 'mostafa.zj@gmail.com',
+                            userName: 'admin',
+                            userEmail: 'admin@web.com',
                             userPassword: hashedPass,
                             isAdmin: true,
                             cart: {
