@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -11,6 +10,7 @@ const flash = require('connect-flash');
 const multer = require('multer');
 // const helmet = require('helmet');
 const compression = require('compression');
+const bodyParser = require('body-parser');
 
 const config = require('./config/config').get(process.env.NODE_ENV);
 const errorsController = require('./controllers/error');
@@ -21,7 +21,7 @@ const adminRouts = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRootes = require('./routes/auth');
 
-const MONGODB_URI = config.DATABASE ;
+const MONGODB_URI = config.DATABASE;
 const csrfProtection = csrf();
 const app = express();
 
@@ -29,31 +29,31 @@ const store = new MongoDBStore({
     uri: MONGODB_URI,
     collection: 'sessions'
 });
-const fileStorage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, 'images');
-    },
-    filename: (req, file, callback) => {
-        callback(null, utility.createGuid().substr(0, 16) + '-' + file.originalname);
-    }
-});
-const fileFilter = (req, file, callback) => {
-    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-        callback(null, true);
-    }
-    else {
-        callback(null, false);
-    }
-}
+// const fileStorage = multer.diskStorage({
+//     destination: (req, file, callback) => {
+//         callback(null, 'images');
+//     },
+//     filename: (req, file, callback) => {
+//         callback(null, utility.createGuid().substr(0, 16) + '-' + file.originalname);
+//     }
+// });
+// const fileFilter = (req, file, callback) => {
+//     if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
+//         callback(null, true);
+//     }
+//     else {
+//         callback(null, false);
+//     }
+// }
 
 // app.use(helmet());
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('file'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(multer().single('file'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(session({ secret: config.SECRET , resave: false, saveUninitialized: false, store: store }));
+app.use(session({ secret: config.SECRET, resave: false, saveUninitialized: false, store: store }));
 app.use(csrfProtection);
 app.use(flash());
 
@@ -89,6 +89,7 @@ app.use(authRootes);
 app.use('/500', errorsController.getError500);
 app.use(errorsController.getError404);
 app.use((error, req, res, next) => {
+    console.log(error);
     res.redirect('/500');
     // return next();
 });

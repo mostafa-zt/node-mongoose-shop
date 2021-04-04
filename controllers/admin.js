@@ -3,7 +3,7 @@ const { check, validationResult, body } = require('express-validator');
 const Product = require('../models/product');
 const utility = require('../util/utility');
 const User = require('../models/user');
-var mongoose = require('mongoose');
+const cloudinaryUtility = require('../util/cloudinaryUtility');
 
 exports.getAddProduct = (req, res, next) => {
     res.render('admin/add-product', {
@@ -54,25 +54,27 @@ exports.postAddProduct = (req, res, next) => {
                 productDescription: productDescription,
             },
         });
-    }
+    };
+    cloudinaryUtility.streamUpload(image).then(result => {
+        const product = new Product(
+            {
+                productTitle: productTitle,
+                productPrice: productPrice,
+                productDescription: productDescription,
+                productImageUrl: result.url,
+                productImagePublicId: result.public_id,
+                user: user._id
+            });
+        product.save()
+            .then(result => {
+                res.redirect('/admin/products/');
+            }).catch(err => {
+                const error = new Error(err);
+                error.httpStatusCode = 500;
+                return next(error);
+            });
+    })
 
-    const imageUrl = path.join('/', image.path);
-    const product = new Product(
-        {
-            productTitle: productTitle,
-            productPrice: productPrice,
-            productDescription: productDescription,
-            productImageUrl: imageUrl,
-            user: user._id
-        });
-    product.save()
-        .then(result => {
-            res.redirect('/admin/products/');
-        }).catch(err => {
-            const error = new Error(err);
-            error.httpStatusCode = 500;
-            return next(error);
-        });
 };
 exports.getEditProduct = (req, res, next) => {
     const productId = req.params.productId;
@@ -112,19 +114,24 @@ exports.postEditProduct = (req, res, next) => {
             },
         });
     }
-
+    let product;
     Product.findById(productId)
-        .then(product => {
-            product.productTitle = productTitle;
-            product.productPrice = productPrice;
-            product.productDescription = productDescription;
+        .then(prod => {
+            prod.productTitle = productTitle;
+            prod.productPrice = productPrice;
+            prod.productDescription = productDescription;
+            product = prod;
             if (image) {
-                utility.deleteFile(product.productImageUrl);
-                const imageUrl = path.join('/', image.path);
-                product.productImageUrl = imageUrl;
+                cloudinaryUtility.removeFile(prod.productImagePublicId);
+                return cloudinaryUtility.streamUpload(image);
             }
-            return product.save();
-        }).then(result => {
+        })
+        .then(result => {
+            if (result) {
+                product.productImageUrl = result.url;
+                product.productImagePublicId = result.public_id;
+            }
+            product.save();
             res.redirect('/admin/products/');
         })
         .catch(err => {
@@ -154,8 +161,9 @@ exports.postRemoveProduct = (req, res, next) => {
             return product.remove();
         })
         .then(result => {
-            utility.deleteFile(result.productImageUrl);
-            User.updateMany({ $pull: {'cart.cartItems': { product: productId }} },(err,node)=> {
+            // utility.deleteFile(result.productImageUrl);
+            cloudinaryUtility.removeFile(result.productImagePublicId);
+            User.updateMany({ $pull: { 'cart.cartItems': { product: productId } } }, (err, node) => {
                 res.status(200).json({ success: true });
             });
         })
